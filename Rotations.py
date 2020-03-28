@@ -22,6 +22,7 @@ from enum import Enum
 np.set_printoptions(precision=3, suppress=True)
 plt.rcParams["figure.figsize"] = [12, 12]
 
+import numpy as np
 
 class Rotation(Enum):
     ROLL = 0
@@ -72,6 +73,42 @@ class EulerRotation:
             [0, 0, 1]
         ])
         return yawMatrix
+
+    
+    def euler_to_quaternion(self, angles):
+        # - Roll - $\phi$ is about the x-axis
+        # - Pitch - $\theta$ is about the y-axis
+        # - Yaw - $\psi$ is about the z-axis
+        roll = angles[0]
+        pitch = angles[1]
+        yaw = angles[2]
+        
+        a = np.cos(roll/2)*np.cos(pitch/2)*np.cos(yaw/2) + np.sin(roll/2)*np.sin(pitch/2)*np.sin(yaw/2)
+        b = np.sin(roll/2)*np.cos(pitch/2)*np.cos(yaw/2) - np.cos(roll/2)*np.sin(pitch/2)*np.sin(yaw/2)
+        c = np.cos(roll/2)*np.sin(pitch/2)*np.cos(yaw/2) + np.sin(roll/2)*np.cos(pitch/2)*np.sin(yaw/2)
+        d = np.cos(roll/2)*np.cos(pitch/2)*np.sin(yaw/2) - np.sin(roll/2)*np.sin(pitch/2)*np.cos(yaw/2)
+        
+        quaternion = np.array([a, b, c, d])
+        
+        return quaternion
+
+    def quaternion_to_euler(self, quaternion):
+        a = quaternion[0]
+        b = quaternion[1]
+        c = quaternion[2]
+        d = quaternion[3]
+        
+        roll = np.arctan2(2.0*(a*b+c*d), 1.0-2.0*(b**2+c**2))
+        pitch = np.arcsin(2*(a*c-d*b))
+        yaw = np.arctan2(2.0*(a*d+b*c), 1.0-2.0*(c**2+d**2))
+        
+        print(roll)
+        print(pitch)
+        print(yaw)
+        
+        euler = np.array([roll, pitch, yaw])
+        
+        return euler
 
     def rotate(self):
         """Applies the rotations in sequential order"""
