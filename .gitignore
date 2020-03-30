@@ -1,1 +1,3 @@
 .vscode/*
+*.pyc
+writeup_template.md
