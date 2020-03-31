@@ -13,6 +13,7 @@ from udacidrone.frame_utils import global_to_local
 from lib.planning_utils import getOrigin, prunePath
 from lib.voronoi_utils import a_star_graph, closest_node, create_grid_and_edges, create_graph, heuristic
 
+
 class States(Enum):
     MANUAL = auto()
     ARMING = auto()
@@ -91,7 +92,8 @@ class MotionPlanning(Drone):
         print("waypoint transition")
         self.target_position = self.waypoints.pop(0)
         print('target position', self.target_position)
-        self.cmd_position(self.target_position[0], self.target_position[1], self.target_position[2], self.target_position[3])
+        self.cmd_position(self.target_position[0], self.target_position[1],
+                          self.target_position[2], self.target_position[3])
 
     def landing_transition(self):
         self.flight_state = States.LANDING
@@ -129,13 +131,14 @@ class MotionPlanning(Drone):
         self.set_home_position(lon0, lat0, 0)
         local_home_ned = global_to_local(self.global_position, self.global_home)
 
-        print('home position set to [N : {:2f}, E : {:2f} D : {:2f}]'.format(local_home_ned[0], local_home_ned[1], local_home_ned[2]))
-        
+        print('home position set to [N : {:2f}, E : {:2f} D : {:2f}]'.format(
+            local_home_ned[0], local_home_ned[1], local_home_ned[2]))
+
         print('global home {0}, position {1}, local position {2}'.format(self.global_home, self.global_position,
                                                                          self.local_position))
         # Read in obstacle map
         data = np.loadtxt('worlds/colliders.csv', delimiter=',', dtype='Float64', skiprows=2)
-        
+
         # Define a grid for a particular altitude and safety margin around obstacles
         grid, edges, north_offset, east_offset = create_grid_and_edges(data, TARGET_ALTITUDE, SAFETY_DISTANCE)
         print("North offset = {0}, east offset = {1}".format(north_offset, east_offset))
@@ -145,11 +148,11 @@ class MotionPlanning(Drone):
         global_home = self.global_home
 
         local_pos = global_to_local(global_pos, global_home)
-        grid_start = (int(local_pos[0]-north_offset), int(local_pos[1]-east_offset))
-        
+        grid_start = (int(local_pos[0] - north_offset), int(local_pos[1] - east_offset))
+
         # Set goal as some arbitrary position on the grid
         local_goal_ned = global_to_local(self.global_goal, self.global_home)
-        grid_goal = (int(local_goal_ned[0]-north_offset), int(local_goal_ned[1]-east_offset))
+        grid_goal = (int(local_goal_ned[0] - north_offset), int(local_goal_ned[1] - east_offset))
 
         graph_ = create_graph(edges)
 
@@ -160,7 +163,6 @@ class MotionPlanning(Drone):
         print('Local Start and Goal: ', grid_start, grid_goal)
         path, _ = a_star_graph(graph_, graph_start, graph_goal, heuristic)
 
-        
         # Prune path 
         path = prunePath(path, epsilon=1e-2)
 

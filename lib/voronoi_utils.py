@@ -4,6 +4,7 @@ import numpy as np
 from queue import PriorityQueue
 import networkx as nx
 
+
 def closest_node(graph, current_position):
     '''
     Compute the closest node in the graph to the current position
@@ -17,6 +18,7 @@ def closest_node(graph, current_position):
             closest_node = p
             dist = d
     return closest_node
+
 
 def create_grid_and_edges(data, drone_altitude, safety_distance):
     '''
@@ -44,12 +46,12 @@ def create_grid_and_edges(data, drone_altitude, safety_distance):
         north, east, alt, d_north, d_east, d_alt = data[i, :]
         if alt + d_alt + safety_distance > drone_altitude:
             obstacle = [
-                int(np.clip(north - d_north - safety_distance - north_min, 0, north_size-1)),
-                int(np.clip(north + d_north + safety_distance - north_min, 0, north_size-1)),
-                int(np.clip(east - d_east - safety_distance - east_min, 0, east_size-1)),
-                int(np.clip(east + d_east + safety_distance - east_min, 0, east_size-1)),
+                int(np.clip(north - d_north - safety_distance - north_min, 0, north_size - 1)),
+                int(np.clip(north + d_north + safety_distance - north_min, 0, north_size - 1)),
+                int(np.clip(east - d_east - safety_distance - east_min, 0, east_size - 1)),
+                int(np.clip(east + d_east + safety_distance - east_min, 0, east_size - 1)),
             ]
-            grid[obstacle[0]:obstacle[1]+1, obstacle[2]:obstacle[3]+1] = 1
+            grid[obstacle[0]:obstacle[1] + 1, obstacle[2]:obstacle[3] + 1] = 1
             # add center of obstacles to points list
             points.append([north - north_min, east - east_min])
 
@@ -112,7 +114,7 @@ def a_star_graph(graph, start, goal, h):
 
     branch = {}
     found = False
-    
+
     while not queue.empty():
         item = queue.get()
         current_node = item[1]
@@ -120,7 +122,7 @@ def a_star_graph(graph, start, goal, h):
             current_cost = 0.0
         else:              
             current_cost = branch[current_node][0]
-            
+
         if current_node == goal:        
             print('Found a path.')
             found = True
@@ -130,12 +132,12 @@ def a_star_graph(graph, start, goal, h):
                 cost = graph.edges[current_node, next_node]['weight']
                 branch_cost = current_cost + cost
                 queue_cost = branch_cost + h(next_node, goal)
-                
+
                 if next_node not in visited:                
                     visited.add(next_node)
                     branch[next_node] = (branch_cost, current_node)
                     queue.put((queue_cost, next_node))
-                    
+
     if found:
         # retrace steps
         n = goal

@@ -3,20 +3,22 @@ from queue import PriorityQueue
 import numpy as np
 from itertools import cycle
 
+
 def getOrigin(filename):
     """
     returns a tuple of lat0 and lon0)
     """
     with open("worlds/colliders.csv") as f:
         data0 = f.readline()
-    
+
     data0 = data0[0:-2]
     data0 = data0.split(', ')
-    
+
     lat0 = data0[0].split(' ')[1]
     lon0 = data0[1].split(' ')[1]
 
     return(float(lat0), float(lon0))
+
 
 def create_grid(data, drone_altitude, safety_distance):
     """
@@ -46,12 +48,12 @@ def create_grid(data, drone_altitude, safety_distance):
         north, east, alt, d_north, d_east, d_alt = data[i, :]
         if alt + d_alt + safety_distance > drone_altitude:
             obstacle = [
-                int(np.clip(north - d_north - safety_distance - north_min, 0, north_size-1)),
-                int(np.clip(north + d_north + safety_distance - north_min, 0, north_size-1)),
-                int(np.clip(east - d_east - safety_distance - east_min, 0, east_size-1)),
-                int(np.clip(east + d_east + safety_distance - east_min, 0, east_size-1)),
+                int(np.clip(north - d_north - safety_distance - north_min, 0, north_size - 1)),
+                int(np.clip(north + d_north + safety_distance - north_min, 0, north_size - 1)),
+                int(np.clip(east - d_east - safety_distance - east_min, 0, east_size - 1)),
+                int(np.clip(east + d_east + safety_distance - east_min, 0, east_size - 1)),
             ]
-            grid[obstacle[0]:obstacle[1]+1, obstacle[2]:obstacle[3]+1] = 1
+            grid[obstacle[0]:obstacle[1] + 1, obstacle[2]:obstacle[3] + 1] = 1
 
     return grid, int(north_min), int(east_min)
 
@@ -102,13 +104,13 @@ def valid_actions(grid, current_node, diagonals=False):
         valid_actions.remove(Action.SOUTHWEST)
         valid_actions.remove(Action.SOUTHEAST)
     else:
-        if x+1 > n or y+1 > m or grid[x+1, y+1] == 1:
+        if x + 1 > n or y + 1 > m or grid[x + 1, y + 1] == 1:
             valid_actions.remove(Action.SOUTHEAST)
-        if x-1 < 0 or y+1 > m or grid[x-1, y+1] == 1:
+        if x - 1 < 0 or y + 1 > m or grid[x - 1, y + 1] == 1:
             valid_actions.remove(Action.NORTHEAST)
-        if x+1 < n or y-1 < 0 or grid[x+1, y-1] == 1:
+        if x + 1 < n or y - 1 < 0 or grid[x + 1, y - 1] == 1:
             valid_actions.remove(Action.SOUTHWEST)
-        if x-1 < 0 or y-1 < 0 or grid[x-1, y-1] == 1:
+        if x - 1 < 0 or y - 1 < 0 or grid[x - 1, y - 1] == 1:
             valid_actions.remove(Action.NORTHWEST)
 
     if x - 1 < 0 or grid[x - 1, y] == 1:
@@ -133,7 +135,7 @@ def a_star(grid, h, start, goal, diagonals=False):
 
     branch = {}
     found = False
-    
+
     while not queue.empty():
         item = queue.get()
         current_node = item[1]
@@ -141,7 +143,7 @@ def a_star(grid, h, start, goal, diagonals=False):
             current_cost = 0.0
         else:              
             current_cost = branch[current_node][0]
-            
+
         if current_node == goal:        
             print('Found a path.')
             found = True
@@ -153,12 +155,12 @@ def a_star(grid, h, start, goal, diagonals=False):
                 next_node = (current_node[0] + da[0], current_node[1] + da[1])
                 branch_cost = current_cost + action.cost
                 queue_cost = branch_cost + h(next_node, goal)
-                
+
                 if next_node not in visited:                
                     visited.add(next_node)               
                     branch[next_node] = (branch_cost, current_node, action)
                     queue.put((queue_cost, next_node))
-             
+
     if found:
         # retrace steps
         n = goal
@@ -176,10 +178,10 @@ def a_star(grid, h, start, goal, diagonals=False):
 
 
 def prunePath(path, epsilon=1e-5):
-    #use path prunning algorithm previously implemented to get a less hashed path
+    # use path prunning algorithm previously implemented to get a less hashed path
     def pt(p):
         return np.array([p[0], p[1], 1.])
-    
+
     def isColinear(p1, p2, p3):
         mat = np.vstack((pt(p1), pt(p2), pt(p3)))
         det = np.linalg.det(mat)
@@ -187,7 +189,7 @@ def prunePath(path, epsilon=1e-5):
             return True
         else:
             return False
-    
+
     pruned_path = path
     '''
     first approach that didn't quite have the expected results
@@ -206,17 +208,16 @@ def prunePath(path, epsilon=1e-5):
     i = 0
     while i < len(pruned_path) - 2:
         p1 = pruned_path[i]
-        p2 = pruned_path[i+1]
-        p3 = pruned_path[i+2]
+        p2 = pruned_path[i + 1]
+        p3 = pruned_path[i + 2]
 
         if isColinear(pt(p1), pt(p2), pt(p3)):
             pruned_path.remove(p2)
         else:
             i += 1
-    
-    
+
     return pruned_path
+
 
 def heuristic(position, goal_position):
     return np.linalg.norm(np.array(position) - np.array(goal_position))
-
