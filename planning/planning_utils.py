@@ -95,6 +95,21 @@ def valid_actions(grid, current_node, diagonals=False):
     # check if the node is off the grid or
     # it's an obstacle
 
+    if not(diagonals):
+        valid_actions.remove(Action.NORTHWEST)
+        valid_actions.remove(Action.NORTHEAST)
+        valid_actions.remove(Action.SOUTHWEST)
+        valid_actions.remove(Action.SOUTHEAST)
+    else:
+        if x+1 > n or y+1 > m or grid[x+1, y+1] == 1:
+            valid_actions.remove(Action.SOUTHEAST)
+        if x-1 < 0 or y+1 > m or grid[x-1, y+1] == 1:
+            valid_actions.remove(Action.NORTHEAST)
+        if x+1 < n or y-1 < 0 or grid[x+1, y-1] == 1:
+            valid_actions.remove(Action.SOUTHWEST)
+        if x-1 < 0 or y-1 < 0 or grid[x-1, y-1] == 1:
+            valid_actions.remove(Action.NORTHWEST)
+
     if x - 1 < 0 or grid[x - 1, y] == 1:
         valid_actions.remove(Action.NORTH)
     if x + 1 > n or grid[x + 1, y] == 1:
@@ -104,12 +119,10 @@ def valid_actions(grid, current_node, diagonals=False):
     if y + 1 > m or grid[x, y + 1] == 1:
         valid_actions.remove(Action.EAST)
 
-    
-
     return valid_actions
 
 
-def a_star(grid, h, start, goal):
+def a_star(grid, h, start, goal, diagonals=False):
 
     path = []
     path_cost = 0
@@ -133,7 +146,7 @@ def a_star(grid, h, start, goal):
             found = True
             break
         else:
-            for action in valid_actions(grid, current_node):
+            for action in valid_actions(grid, current_node, diagonals):
                 # get the tuple representation
                 da = action.delta
                 next_node = (current_node[0] + da[0], current_node[1] + da[1])
@@ -160,7 +173,20 @@ def a_star(grid, h, start, goal):
         print('**********************') 
     return path[::-1], path_cost
 
-
+def prunePath(path, epsilon=1e-5):
+    #use path prunning algorithm previously implemented to get a less hashed path
+    def pt(p):
+        return np.array([p[0], p[1], p[2]])
+    
+    def isColinear(p1, p2, p3, epsilon):
+        mat = np.vstack((pt(p1), pt(p2), pt(p3)))
+        det = np.linalg.det(mat)
+        if np.abs(det) < epsilon:
+            return True
+        else:
+            return False
+    
+    
 
 def heuristic(position, goal_position):
     return np.linalg.norm(np.array(position) - np.array(goal_position))

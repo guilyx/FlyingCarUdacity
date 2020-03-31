@@ -51,14 +51,14 @@ class BackyardFlyer(Drone):
     def local_position_callback(self):
         self.xlog.append(self.local_position[0])
         self.ylog.append(self.local_position[1])
-        self.zlog.append(-1*self.local_position[2])
+        self.zlog.append(-1 * self.local_position[2])
         if self.flight_phase == Phases.TAKEOFF:
             if -1.0 * self.local_position[2] > 0.95 * self.target_position[2]:
                 self.all_waypoints = self.calculate_box()
                 self.waypoint_transition()
         if self.flight_phase == Phases.WAYPOINT:
             if np.linalg.norm(self.target_position[0:2] - self.local_position[0:2]) < 1.0:
-                
+
                 if (len(self.all_waypoints) > 0):
                     self.waypoint_transition()
                 else:
@@ -66,12 +66,10 @@ class BackyardFlyer(Drone):
                         print("local position " + str(self.local_position))
                         self.landing_transition()
 
-        
-
     def velocity_callback(self):
         self.vxlog.append(self.local_velocity[0])
         self.vylog.append(self.local_velocity[1])
-        self.vzlog.append(-1*self.local_velocity[2])
+        self.vzlog.append(-1 * self.local_velocity[2])
         if self.flight_phase == Phases.LANDING:
             if ((self.global_position[2] - self.global_home[2] < 0.1)) and abs(self.local_position[2] < 0.01):
                 self.disarming_transition()
@@ -147,9 +145,10 @@ class BackyardFlyer(Drone):
         self.connection.start()
         print("Closing log file")
         self.stop_log()
-    
+
+
 def plot_positions(drone_object):
-    fig, axs = plt.subplots(3, sharex = True, sharey = True)
+    fig, axs = plt.subplots(3, sharex=True, sharey=True)
     fig.suptitle("Position at each Callbacks")
     axs[0].plot(drone_object.xlog, 'tab:orange')
     axs[0].set_title("X Position")
@@ -160,7 +159,7 @@ def plot_positions(drone_object):
 
 
 def plot_velocities(drone_object):
-    fig, axs = plt.subplots(3, sharex = True)
+    fig, axs = plt.subplots(3, sharex=True)
     fig.suptitle("Velocities at each Callbacks")
     axs[0].plot(drone_object.vxlog, 'tab:orange')
     axs[0].set_title("X Velocity")
@@ -168,6 +167,7 @@ def plot_velocities(drone_object):
     axs[1].set_title("Y Velocity")
     axs[2].plot(drone_object.vzlog, 'tab:blue')
     axs[2].set_title("Z Velocity")
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

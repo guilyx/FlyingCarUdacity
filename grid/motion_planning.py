@@ -29,13 +29,13 @@ class States(Enum):
 
 class MotionPlanning(Drone):
 
-    def __init__(self, connection, global_goal):
+    def __init__(self, connection, global_goal, diagonal_search=False):
         super().__init__(connection)
 
         self.target_position = np.array([0.0, 0.0, 0.0])
         self.waypoints = []
         self.in_mission = True
-        self.diagonal_search = False
+        self.diagonal_search = diagonal_search
         self.check_state = {}
 
         self.global_goal = global_goal
@@ -122,7 +122,7 @@ class MotionPlanning(Drone):
     def plan_path(self):
         self.flight_state = States.PLANNING
         print("Searching for a path ...")
-        TARGET_ALTITUDE = 5
+        TARGET_ALTITUDE = int(np.ceil(self.global_goal[2]))
         SAFETY_DISTANCE = 5
 
         self.target_position[2] = TARGET_ALTITUDE
@@ -145,7 +145,10 @@ class MotionPlanning(Drone):
         print("North offset = {0}, east offset = {1}".format(north_offset, east_offset))
 
         # Define starting point on the grid (this is just grid center)
-        grid_start = (int(local_home_ned[0]-north_offset), int(local_home_ned[1]-east_offset))
+        global_pos = (self._longitude, self._latitude, self._altitude)
+        global_home = self.global_home
+        local_pos = global_to_local(global_pos, global_home)
+        grid_start = (int(local_pos[0]-north_offset), int(local_pos[1]-east_offset))
         
         # Set goal as some arbitrary position on the grid
         local_goal_ned = global_to_local(self.global_goal, self.global_home)
@@ -187,13 +190,15 @@ if __name__ == "__main__":
     parser.add_argument('--host', type=str, default='127.0.0.1', help="host address, i.e. '127.0.0.1'")
     parser.add_argument('--goal_lon', type=float, default=-122.396591, help="Goal Longitude")
     parser.add_argument('--goal_lat', type=float, default=37.793405, help="Goal Latitude")
-    parser.add_argument('--goal_alt', type=float, default=5.0, help="Goal Altitude")
+    parser.add_argument('--goal_alt', type=float, default=10.0, help="Goal Altitude")
     args = parser.parse_args()
 
     goal = (args.goal_lon, args.goal_lat, args.goal_alt)
 
     conn = MavlinkConnection('tcp:{0}:{1}'.format(args.host, args.port), timeout=60)
-    drone = MotionPlanning(conn, goal)
+
+    # MotionPlanning take connexion, goal coordinates and diagonal
+    drone = MotionPlanning(conn, goal, True)
     time.sleep(1)
 
     drone.start()
