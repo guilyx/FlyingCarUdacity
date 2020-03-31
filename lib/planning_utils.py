@@ -1,6 +1,7 @@
 from enum import Enum
 from queue import PriorityQueue
 import numpy as np
+from itertools import cycle
 
 def getOrigin(filename):
     """
@@ -173,12 +174,13 @@ def a_star(grid, h, start, goal, diagonals=False):
         print('**********************') 
     return path[::-1], path_cost
 
+
 def prunePath(path, epsilon=1e-5):
     #use path prunning algorithm previously implemented to get a less hashed path
     def pt(p):
-        return np.array([p[0], p[1], p[2]])
+        return np.array([p[0], p[1], 1.])
     
-    def isColinear(p1, p2, p3, epsilon):
+    def isColinear(p1, p2, p3):
         mat = np.vstack((pt(p1), pt(p2), pt(p3)))
         det = np.linalg.det(mat)
         if np.abs(det) < epsilon:
@@ -186,7 +188,34 @@ def prunePath(path, epsilon=1e-5):
         else:
             return False
     
+    pruned_path = path
+    '''
+    first approach that didn't quite have the expected results
+    tried because it felt more python-ish
+    pruned_cycle = cycle(pruned_path)
+    p2 = next(pruned_cycle)
+    p3 = next(pruned_cycle)
+    for p in path:
+        p1, p2, p3 = p2, p3, next(pruned_cycle)
+
+        if isColinear(p1, p2, p3):
+            pruned_path.remove(p2)
+    '''
+
+    pruned_path = path
+    i = 0
+    while i < len(pruned_path) - 2:
+        p1 = pruned_path[i]
+        p2 = pruned_path[i+1]
+        p3 = pruned_path[i+2]
+
+        if isColinear(pt(p1), pt(p2), pt(p3)):
+            pruned_path.remove(p2)
+        else:
+            i += 1
     
+    
+    return pruned_path
 
 def heuristic(position, goal_position):
     return np.linalg.norm(np.array(position) - np.array(goal_position))

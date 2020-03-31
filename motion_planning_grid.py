@@ -10,11 +10,7 @@ from udacidrone.connection import MavlinkConnection
 from udacidrone.messaging import MsgID
 from udacidrone.frame_utils import global_to_local
 
-from os import path
-import sys
-sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
-
-from planning.planning_utils import a_star, heuristic, create_grid, getOrigin
+from lib.planning_utils import a_star, heuristic, create_grid, getOrigin, prunePath
 
 
 class States(Enum):
@@ -138,7 +134,7 @@ class MotionPlanning(Drone):
         print('global home {0}, position {1}, local position {2}'.format(self.global_home, self.global_position,
                                                                          self.local_position))
         # Read in obstacle map
-        data = np.loadtxt('colliders.csv', delimiter=',', dtype='Float64', skiprows=2)
+        data = np.loadtxt('worlds/colliders.csv', delimiter=',', dtype='Float64', skiprows=2)
         
         # Define a grid for a particular altitude and safety margin around obstacles
         grid, north_offset, east_offset = create_grid(data, TARGET_ALTITUDE, SAFETY_DISTANCE)
@@ -161,8 +157,9 @@ class MotionPlanning(Drone):
         # or move to a different search space such as a graph (not done here)
         print('Local Start and Goal: ', grid_start, grid_goal)
         path, _ = a_star(grid, heuristic, grid_start, grid_goal, self.diagonal_search)
-        # TODO: prune path to minimize number of waypoints
-        # TODO (if you're feeling ambitious): Try a different approach altogether!
+        
+        # Prune path 
+        path = prunePath(path)
 
         # Convert path to waypoints
         waypoints = [[p[0] + north_offset, p[1] + east_offset, TARGET_ALTITUDE, 0] for p in path]
@@ -190,7 +187,7 @@ if __name__ == "__main__":
     parser.add_argument('--host', type=str, default='127.0.0.1', help="host address, i.e. '127.0.0.1'")
     parser.add_argument('--goal_lon', type=float, default=-122.396591, help="Goal Longitude")
     parser.add_argument('--goal_lat', type=float, default=37.793405, help="Goal Latitude")
-    parser.add_argument('--goal_alt', type=float, default=10.0, help="Goal Altitude")
+    parser.add_argument('--goal_alt', type=float, default=20.0, help="Goal Altitude")
     args = parser.parse_args()
 
     goal = (args.goal_lon, args.goal_lat, args.goal_alt)
