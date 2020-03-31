@@ -55,8 +55,9 @@ This is the second project of the UDACITY Flying Cars Nanodegree. It contains mo
 ## Setup
 
 1. [Download miniconda](https://conda.io/miniconda.html) and install it.
-2. Star (hehe) and clone the project. `git clone https://github.com/guilyx/autonomous-uav.git`
-3. Create the miniconda environment (could be time consuming). `conda env create -f environment.yml`
+2. Star the project (hehe).
+2. Clone the project. `git clone https://github.com/guilyx/autonomous-uav.git`
+3. Create the miniconda environment. `conda env create -f environment.yml`
 4. Activate the environment. `source activate fcnd`.
 5. If everything went well you can now use the projects scripts.
 6. Download latest version of the [UAV Simulator from Udacity](https://github.com/udacity/FCND-Simulator-Releases/releases)
@@ -86,6 +87,12 @@ To Do : Use algorithms outside the simulator on the grid and display the found p
 4. Probabilistic Graph discretization : `none`
 5. Receding Horizon : `none`
 6. Potential Field : `none`
+
+## Abstractions
+
+### Differences between Backyard Flyer and Motion Planner
+
+Backyard Flyer has one fewer state as it's never planning : the waypoints are already hardcoded to draw a square-ish. For the motion-planner, a "Planning" state was added to compute the waypoints during this state. The UAV will take-off to a defined altitude after entering the planning state. Your waypoints will be calculated and the drone will follow the path.
 
 ## Roadmap
 
