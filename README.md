@@ -86,6 +86,12 @@ To Do : Use algorithms outside the simulator on the grid and display the found p
 5. Receding Horizon : `none`
 6. Potential Field : `none`
 
+## Abstractions
+
+### Differences between Backyard Flyer and Motion Planner
+
+Backyard Flyer has one fewer state as it's never planning : the waypoints are already hardcoded to draw a square-ish. For the motion-planner, a "Planning" state was added to compute the waypoints during this state. The UAV will take-off to a defined altitude after entering the planning state. Your waypoints will be calculated and the drone will follow the path.
+
 ## Roadmap
 
 See the [open issues](https://github.com/guilyx/autonomous-uav/issues) for a list of proposed features (and known issues).
