@@ -49,6 +49,8 @@
   </a>
 </p>
 
+This is the second project of the UDACITY Flying Cars Nanodegree. It contains more or less elaborate planning and discretization techniques. As of now only scripts for the Udacity Simulator are available, but a matplotlib based representation of the configuration space and a ploted path of all the algorithms used will eventually come.
+
 
 ## Setup
 
@@ -63,7 +65,7 @@ You should now be ready to go.
 
 ## Run
 
-### Simulator Planning
+### Udacity Simulator Planning
 
 These four scripts will build your plan for the simulator with different planning/discretizing approaches. As of now they all use A* to find the optimal path and prune the colinear points of the path by default. ( comment function call to remove that )
 
@@ -74,7 +76,7 @@ These four scripts will build your plan for the simulator with different plannin
 
 Medial Axis and Grid discretization have diagonal actions activated by default, you can change the value in the MotionPlanner constructor. Note that all the scripts use arguments to define the goal position. Use `--goal_lon=x --goal_lat=y --goal_alt=z` to use a custom destination. A default one is defined so it's not mandatory.
 
-### Obstacle CSV Planning
+### Matplotlib Planning
 
 To Do : Use algorithms outside the simulator on the grid and display the found path.
 

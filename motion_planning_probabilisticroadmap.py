@@ -149,13 +149,15 @@ class MotionPlanning(Drone):
         global_home = self.global_home
 
         local_pos = global_to_local(global_pos, global_home)
-        grid_start = (int(local_pos[0] - north_offset), int(local_pos[1] - east_offset))
+        grid_start = (int(local_pos[0] - north_offset), int(local_pos[1] - east_offset), TARGET_ALTITUDE)
 
         # Set goal as some arbitrary position on the grid
         local_goal_ned = global_to_local(self.global_goal, self.global_home)
-        grid_goal = (int(local_goal_ned[0] - north_offset), int(local_goal_ned[1] - east_offset))
+        grid_goal = (int(local_goal_ned[0] - north_offset), int(local_goal_ned[1] - east_offset), TARGET_ALTITUDE)
 
-        graph_ = create_probabilistic_graph(data, 100, 10)
+        graph_ = create_probabilistic_graph(data, 50, 5)
+
+        print("Graph generated")
 
         graph_start = closest_node(graph_, grid_start)
         graph_goal = closest_node(graph_, grid_goal)

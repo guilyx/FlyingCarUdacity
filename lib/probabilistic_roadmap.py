@@ -17,6 +17,7 @@ def create_probabilistic_graph(data, n_sampling_points, k):
     n_sampling_points : sampling n points on random position
     k : number of nearest nodes each node try to connect to
     '''
+    print("Generating probabilistic graph...")
     sampler = Sampler(data)
     polygons = sampler._polygons
 
@@ -24,6 +25,7 @@ def create_probabilistic_graph(data, n_sampling_points, k):
 
     g = nx.Graph()
     tree = KDTree(nodes)
+    print("Connecting nodes...")
     for n1 in nodes:
         # for each node connect try to connect to k nearest nodes
         idxs = tree.query([n1], k, return_distance=False)[0]
