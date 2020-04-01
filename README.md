@@ -81,7 +81,7 @@ Medial Axis and Grid discretization have diagonal actions activated by default, 
 
 To Do : Use algorithms outside the simulator on the grid and display the found path.
 
-1. Grid discretization : `none`
+1. Grid discretization : `python src/grid_search.py`
 2. Medial Axis discretization : `none`
 3. Voronoi Graph discretization : `none`
 4. Probabilistic Graph discretization : `none`
