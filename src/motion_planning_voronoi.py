@@ -10,8 +10,11 @@ from udacidrone.connection import MavlinkConnection
 from udacidrone.messaging import MsgID
 from udacidrone.frame_utils import global_to_local
 
+from os import path
+import sys
+sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
+
 from lib.planning_utils import getOrigin, prunePath
-from lib.probabilistic_roadmap import create_probabilistic_graph
 from lib.voronoi_utils import a_star_graph, closest_node, create_grid_and_edges, create_graph, heuristic
 
 
@@ -149,15 +152,13 @@ class MotionPlanning(Drone):
         global_home = self.global_home
 
         local_pos = global_to_local(global_pos, global_home)
-        grid_start = (int(local_pos[0] - north_offset), int(local_pos[1] - east_offset), TARGET_ALTITUDE)
+        grid_start = (int(local_pos[0] - north_offset), int(local_pos[1] - east_offset))
 
         # Set goal as some arbitrary position on the grid
         local_goal_ned = global_to_local(self.global_goal, self.global_home)
-        grid_goal = (int(local_goal_ned[0] - north_offset), int(local_goal_ned[1] - east_offset), TARGET_ALTITUDE)
+        grid_goal = (int(local_goal_ned[0] - north_offset), int(local_goal_ned[1] - east_offset))
 
-        graph_ = create_probabilistic_graph(data, 100, 10)
-
-        print("Graph generated")
+        graph_ = create_graph(edges)
 
         graph_start = closest_node(graph_, grid_start)
         graph_goal = closest_node(graph_, grid_goal)
@@ -195,7 +196,7 @@ if __name__ == "__main__":
     parser.add_argument('--host', type=str, default='127.0.0.1', help="host address, i.e. '127.0.0.1'")
     parser.add_argument('--goal_lon', type=float, default=-122.396591, help="Goal Longitude")
     parser.add_argument('--goal_lat', type=float, default=37.793405, help="Goal Latitude")
-    parser.add_argument('--goal_alt', type=float, default=25.0, help="Goal Altitude")
+    parser.add_argument('--goal_alt', type=float, default=20.0, help="Goal Altitude")
     args = parser.parse_args()
 
     goal = (args.goal_lon, args.goal_lat, args.goal_alt)

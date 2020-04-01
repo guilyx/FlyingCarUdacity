@@ -70,10 +70,10 @@ You should now be ready to go.
 
 These four scripts will build your plan for the simulator with different planning/discretizing approaches. As of now they all use A* to find the optimal path and prune the colinear points of the path by default. ( comment function call to remove that )
 
-1. Grid discretization : `python motion_planning_grid.py`
-2. Medial Axis discretization : `python motion_planning_medialaxis.py`
-3. Voronoi Graph discretization : `python motion_planning_voronoi.py`
-4. Probabilistic Graph discretization : `python motion_planning_probabilisticroadmap.py` # Under Development
+1. Grid discretization : `python src/motion_planning_grid.py`
+2. Medial Axis discretization : `python src/motion_planning_medialaxis.py`
+3. Voronoi Graph discretization : `python src/motion_planning_voronoi.py`
+4. Probabilistic Graph discretization : `python src/motion_planning_probabilisticroadmap.py` # Under Development
 
 Medial Axis and Grid discretization have diagonal actions activated by default, you can change the value in the MotionPlanner constructor. Note that all the scripts use arguments to define the goal position. Use `--goal_lon=x --goal_lat=y --goal_alt=z` to use a custom destination. A default one is defined so it's not mandatory.
 

@@ -5,10 +5,15 @@ from enum import Enum, auto
 
 import numpy as np
 
+
 from udacidrone import Drone
 from udacidrone.connection import MavlinkConnection
 from udacidrone.messaging import MsgID
 from udacidrone.frame_utils import global_to_local
+
+from os import path
+import sys
+sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 
 from lib.planning_utils import a_star, heuristic, create_grid, getOrigin, prunePath
 

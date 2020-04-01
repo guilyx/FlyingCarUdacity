@@ -10,6 +10,10 @@ from udacidrone.connection import MavlinkConnection
 from udacidrone.messaging import MsgID
 from udacidrone.frame_utils import global_to_local
 
+from os import path
+import sys
+sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
+
 from lib.planning_utils import a_star, heuristic, create_grid, getOrigin, prunePath
 from lib.medialaxis_utils import create_medial_axis, find_start_goal, back_to_grid
 
