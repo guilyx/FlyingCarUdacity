@@ -155,7 +155,7 @@ class MotionPlanning(Drone):
         local_goal_ned = global_to_local(self.global_goal, self.global_home)
         grid_goal = (int(local_goal_ned[0] - north_offset), int(local_goal_ned[1] - east_offset), TARGET_ALTITUDE)
 
-        graph_ = create_probabilistic_graph(data, 50, 5)
+        graph_ = create_probabilistic_graph(data, 100, 10)
 
         print("Graph generated")
 
