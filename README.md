@@ -96,7 +96,7 @@ Backyard Flyer has one fewer state as it's never planning : the waypoints are al
 ### Plots of the different paths
 
 <p align="center">
-    <img src="misc/matplotlib.png" alt="Matplot" width="800" height="450">
+    <img src="misc/allplots.png" alt="Matplot Plots" width="1100" height="300">
   </a>
 </p>
 
