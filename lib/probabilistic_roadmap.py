@@ -11,7 +11,37 @@ def can_connect(n1, n2, polygons):
             return False
     return True
 
-def create_probabilistic_graph(data, n_sampling_points, k):
+def closest_node(graph, current_position):
+    '''
+    Compute the closest node in the graph to the current position
+    '''
+    closest_node = None
+    dist = 100000
+    xyz_position = (current_position[0], current_position[1], current_position[2])
+    for p in graph.nodes:
+        d = ((p[0]-xyz_position[0])**2 + (p[1]-xyz_position[1])**2 + (p[2]-xyz_position[2]))
+        if d < dist:
+            closest_node = p
+            dist = d
+    return closest_node
+
+def createGraphFromNodes(nodes, polygons_, k):
+    g = nx.Graph()
+    tree = KDTree(nodes)
+    for n1 in nodes:
+        # for each node connect try to connect to k nearest nodes
+        idxs = tree.query([n1], k, return_distance=False)[0]
+        
+        for idx in idxs:
+            n2 = nodes[idx]
+            if n2 == n1:
+                continue
+                
+            if can_connect(n1, n2, polygons_):
+                g.add_edge(n1, n2, weight=1)
+    return g
+
+def generateProbabilisticGraph(data, n_sampling_points, k):
     '''
     Graph generation for probabilistic roadmap
     n_sampling_points : sampling n points on random position
