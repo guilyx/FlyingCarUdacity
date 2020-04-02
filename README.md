@@ -49,7 +49,8 @@
   </a>
 </p>
 
-This is the second project of the UDACITY Flying Cars Nanodegree. It contains more or less elaborate planning and discretization techniques. As of now only scripts for the Udacity Simulator are available, but a matplotlib based representation of the configuration space and a ploted path of all the algorithms used will eventually come.
+This is the second project of the UDACITY Flying Cars Nanodegree. It contains more or less elaborate planning and discretization techniques. 
+Implemented for the Udacity simulator as well as in an "empty shell" plotted with matplotlib.
 
 
 ## Setup
@@ -79,12 +80,10 @@ Medial Axis and Grid discretization have diagonal actions activated by default, 
 
 ### Matplotlib Planning
 
-To Do : Use algorithms outside the simulator on the grid and display the found path.
-
 1. Grid discretization : `python src/grid_search.py`
-2. Medial Axis discretization : `none`
-3. Voronoi Graph discretization : `none`
-4. Probabilistic Graph discretization : `none`
+2. Medial Axis discretization : `python src/medialaxis_search.py` (not working)
+3. Voronoi Graph discretization : `python src/voronoi_search.py`
+4. Probabilistic Graph discretization : `python src/probabilistic_search.py`
 5. Receding Horizon : `none`
 6. Potential Field : `none`
 
@@ -93,6 +92,8 @@ To Do : Use algorithms outside the simulator on the grid and display the found p
 ### Differences between Backyard Flyer and Motion Planner
 
 Backyard Flyer has one fewer state as it's never planning : the waypoints are already hardcoded to draw a square-ish. For the motion-planner, a "Planning" state was added to compute the waypoints during this state. The UAV will take-off to a defined altitude after entering the planning state. Your waypoints will be calculated and the drone will follow the path.
+
+### Plots of the different paths
 
 ## Roadmap
 
