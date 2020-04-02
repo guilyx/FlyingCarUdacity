@@ -95,6 +95,13 @@ Backyard Flyer has one fewer state as it's never planning : the waypoints are al
 
 ### Plots of the different paths
 
+<p align="center">
+    <img src="misc/matplotlib.png" alt="Matplot" width="800" height="450">
+  </a>
+</p>
+
+Performance comparison has yet to come.
+
 ## Roadmap
 
 See the [open issues](https://github.com/guilyx/autonomous-uav/issues) for a list of proposed features (and known issues).
