@@ -15,8 +15,8 @@ import sys
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 
 from lib.planning_utils import getOrigin, prunePath
-from lib.probabilistic_roadmap import create_probabilistic_graph
-from lib.voronoi_utils import a_star_graph, closest_node, create_grid_and_edges, create_graph, heuristic
+from lib.probabilistic_roadmap import closest_node, generateProbabilisticGraph, createGraphFromNodes 
+from lib.voronoi_utils import a_star_graph, create_grid_and_edges, create_graph, heuristic
 
 
 class States(Enum):
@@ -159,7 +159,7 @@ class MotionPlanning(Drone):
         local_goal_ned = global_to_local(self.global_goal, self.global_home)
         grid_goal = (int(local_goal_ned[0] - north_offset), int(local_goal_ned[1] - east_offset), TARGET_ALTITUDE)
 
-        graph_ = create_probabilistic_graph(data, 100, 10)
+        graph_ = generateProbabilisticGraph(data, 300, 10)
 
         print("Graph generated")
 
