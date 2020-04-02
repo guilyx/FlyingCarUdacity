@@ -14,7 +14,7 @@ def plotGrid(grid):
     plt.ylabel('NORTH')
     plt.show()
 
-def plotPath(path, grid):
+def plotPath(grid, path):
     plt.imshow(grid, cmap='Greys', origin='lower')
     plt.plot(path[0][1], path[0][0], 'x')
     plt.plot(path[-1][1], path[-1][0], 'x')
@@ -26,12 +26,12 @@ def plotPath(path, grid):
     plt.ylabel('NORTH')
     plt.show()
 
-def generateGrid(filename, drone_altitude=10, safe_distance=5):
+def generateGrid(filename, drone_altitude=5, safe_distance=5):
     data = np.loadtxt(filename, delimiter=',', dtype='Float64', skiprows=2)
     grid, northOffset, eastOffset = create_grid(data, drone_altitude, safe_distance)
     return grid
 
-def planPath(grid, start=(25, 100), goal=(800., 770.), diagonals=False):
+def planPath(grid, start=(25, 100), goal=(650, 500), diagonals=False):
     path, cost = a_star(grid, heuristic, start, goal, diagonals)
     return path, cost
 
@@ -39,4 +39,4 @@ if __name__ == "__main__":
     grid = generateGrid('worlds/colliders.csv')
     path, cost = planPath(grid, diagonals=True)
     prunned_path = prunePath(path)
-    plotPath(prunned_path, grid)
+    plotPath(grid, prunned_path)
