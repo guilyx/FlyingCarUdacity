@@ -89,7 +89,7 @@ Medial Axis and Grid discretization have diagonal actions activated by default, 
 ## Plots of the different paths
 
 <p align="center">
-    <img src="misc/matplotlib.png" alt="Matplot" width="800" height="450">
+    <img src="misc/allplots.png" alt="Matplot Plots" width="1100" height="300">
   </a>
 </p>
 
