@@ -2,3 +2,4 @@
 *.pyc
 writeup_template.md
 setup.cfg
+_QuadrotorController/build/*
