@@ -86,6 +86,23 @@ Medial Axis and Grid discretization have diagonal actions activated by default, 
 5. Receding Horizon : `none`
 6. Potential Field : `none`
 
+### Control Simulator
+
+To use the simulator for control testing, follow these steps :
+
+1. `cd _QuadrotorController`
+2. `mkdir build && cd build` 
+3. `cmake ..` 
+4. `make`
+5. `./CPPSim`
+
+You can use right click to change scenario, as well as change the control parameters ( that are already tuned ) in `_QuadrotorController/config/QuadControlParams.txt`.
+Note that I do not own the simulator, it was designed and built by Fotokite. (Sergei Lupashin in particular)
+
+### Udacity Simulator Control
+
+Now let's mix things up ! (under dev)
+
 ## Plots of the different paths
 
 <p align="center">
