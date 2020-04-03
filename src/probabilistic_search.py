@@ -21,20 +21,19 @@ def plotProbabilisticPath(data, grid, graph, path):
 
     nmin = np.min(data[:, 0])
     emin = np.min(data[:, 1])
-
-    # draw nodes
-    for n1 in graph.nodes:
-        plt.scatter(n1[1] - emin, n1[0] - nmin, c='red')
         
     # draw edges
     for (n1, n2) in graph.edges:
-        plt.plot([n1[1] - emin, n2[1] - emin], [n1[0] - nmin, n2[0] - nmin], 'black')
+        plt.plot([n1[1] - emin, n2[1] - emin], [n1[0] - nmin, n2[0] - nmin], 'green')
 
     # draw path
     path_pairs = zip(path[:-1], path[1:])
     for (n1, n2) in path_pairs:
-        plt.plot([n1[1] - emin, n2[1] - emin], [n1[0] - nmin, n2[0] - nmin], 'green')
+        plt.plot([n1[1] - emin, n2[1] - emin], [n1[0] - nmin, n2[0] - nmin], color='red', linewidth=2)
 
+    # draw nodes
+    for n1 in graph.nodes:
+        plt.scatter(n1[1] - emin, n1[0] - nmin, c='blue')
 
     plt.xlabel('NORTH')
     plt.ylabel('EAST')
@@ -70,7 +69,7 @@ def plotGraphEdges(data, grid, graph):
     plt.show()
 
 if __name__ == "__main__":
-    filename = 'worlds/colliders.csv'
+    filename = 'data/colliders.csv'
     data = np.loadtxt(filename, delimiter=',', dtype='Float64', skiprows=2)
 
     start = (25., 100., 20.)

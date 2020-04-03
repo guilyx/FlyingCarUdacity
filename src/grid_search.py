@@ -36,7 +36,7 @@ def planPath(grid, start=(25, 100), goal=(650, 500), diagonals=False):
     return path, cost
 
 if __name__ == "__main__":
-    grid = generateGrid('worlds/colliders.csv')
+    grid = generateGrid('data/colliders.csv')
     path, cost = planPath(grid, diagonals=True)
     prunned_path = prunePath(path)
     plotPath(grid, prunned_path)

@@ -44,7 +44,7 @@ def plotVoronoiPath(grid, edges, path, start, goal, start_graph, goal_graph):
     plt.show()
 
 if __name__ == "__main__":
-    filename = 'worlds/colliders.csv'
+    filename = 'data/colliders.csv'
     data = np.loadtxt(filename, delimiter=',', dtype='Float64', skiprows=2)
 
     grid, edges, no, eo = create_grid_and_edges(data, drone_altitude=5, safety_distance=2)

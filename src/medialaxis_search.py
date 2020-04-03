@@ -53,7 +53,7 @@ def planMedialPath(grid, skeleton, start=(218, 371), goal=(419, 520), diagonals=
     
 
 if __name__ == "__main__":
-    grid = generateGrid('worlds/colliders.csv', drone_altitude=50, safe_distance=2)
+    grid = generateGrid('data/colliders.csv', drone_altitude=50, safe_distance=2)
     skeleton = create_medial_axis(grid)
     # plotMedialAxis(grid, skeleton)
     diagonals = True

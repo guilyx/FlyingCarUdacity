@@ -11,10 +11,10 @@
     <img src="misc/controls-menu.gif" alt="Simulator" width="540" height="400">
   </a>
 
-  <h3 align="center">3D Motion Planning - Autonomous UAV Nanodegree</h3>
+  <h3 align="center">Autonomous UAV Nanodegree</h3>
 
   <p align="center">
-     Path planner using various discretization of the configuration space for A* search.
+     Path planner, cascaded controller, extended kalman filter...
     <br />
     <a href="https://github.com/guilyx/autonomous-uav"><strong>Explore the docs »</strong></a>
     <br />
@@ -49,8 +49,7 @@
   </a>
 </p>
 
-This is the second project of the UDACITY Flying Cars Nanodegree. It contains more or less elaborate planning and discretization techniques. 
-Implemented for the Udacity simulator as well as in an "empty shell" plotted with matplotlib.
+This is the projects from Udacity's FCND (Flying Car Nanodegree). It contains more or less elaborate planning and discretization techniques. Implemented for the Udacity simulator as well as in an "empty shell" plotted with matplotlib. It also contains control utilitaries for uav flights and a flight trajectories scenarii.
 
 
 ## Setup
@@ -87,13 +86,7 @@ Medial Axis and Grid discretization have diagonal actions activated by default, 
 5. Receding Horizon : `none`
 6. Potential Field : `none`
 
-## Abstractions
-
-### Differences between Backyard Flyer and Motion Planner
-
-Backyard Flyer has one fewer state as it's never planning : the waypoints are already hardcoded to draw a square-ish. For the motion-planner, a "Planning" state was added to compute the waypoints during this state. The UAV will take-off to a defined altitude after entering the planning state. Your waypoints will be calculated and the drone will follow the path.
-
-### Plots of the different paths
+## Plots of the different paths
 
 <p align="center">
     <img src="misc/matplotlib.png" alt="Matplot" width="800" height="450">

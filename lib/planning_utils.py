@@ -8,7 +8,7 @@ def getOrigin(filename):
     """
     returns a tuple of lat0 and lon0)
     """
-    with open("worlds/colliders.csv") as f:
+    with open("data/colliders.csv") as f:
         data0 = f.readline()
 
     data0 = data0[0:-2]

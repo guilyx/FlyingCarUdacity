@@ -129,7 +129,7 @@ class MotionPlanning(Drone):
         SAFETY_DISTANCE = 5
 
         self.target_position[2] = TARGET_ALTITUDE
-        obstacle_file = 'worlds/colliders.csv'
+        obstacle_file = 'data/colliders.csv'
 
         lat0, lon0 = getOrigin(obstacle_file)
 
@@ -142,7 +142,7 @@ class MotionPlanning(Drone):
         print('global home {0}, position {1}, local position {2}'.format(self.global_home, self.global_position,
                                                                          self.local_position))
         # Read in obstacle map
-        data = np.loadtxt('worlds/colliders.csv', delimiter=',', dtype='Float64', skiprows=2)
+        data = np.loadtxt('data/colliders.csv', delimiter=',', dtype='Float64', skiprows=2)
 
         # Define a grid for a particular altitude and safety margin around obstacles
         grid, edges, north_offset, east_offset = create_grid_and_edges(data, TARGET_ALTITUDE, SAFETY_DISTANCE)
