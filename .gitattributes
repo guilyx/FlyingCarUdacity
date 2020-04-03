@@ -1,0 +1,14 @@
+_QuadrotorController/lib/* linguist-vendored
+_QuadrotorController/src/Drawing/* linguist-vendored
+_QuadrotorController/src/Math/* linguist-vendored
+_QuadrotorController/src/MavlinkNode/* linguist-vendored
+_QuadrotorController/src/Simulation/* linguist-vendored
+_QuadrotorController/src/Utility/* linguist-vendored
+_QuadrotorController/src/Common.h -linguist-vendored
+_QuadrotorController/src/DataSource.h -linguist-vendored
+_QuadrotorController/src/BaseController.h -linguist-vendored
+_QuadrotorController/src/BaseController.cpp -linguist-vendored
+_QuadrotorController/src/Trajectory.h -linguist-vendored
+_QuadrotorController/src/Trajectory.cpp -linguist-vendored
+_QuadrotorController/src/VehicleDatatypes.cpp -linguist-vendored
+_QuadrotorController/src/ControllerFactory.h -linguist-vendored
