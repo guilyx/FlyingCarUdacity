@@ -34,8 +34,9 @@
 * [About the Project](#about-the-project)
 * [Setup](#setup)
 * [Run](#run)
-  * [Simulator](#simulator-planning)
-  * [Matplotlib](#obstacle-csv-planning)
+  * [UAV Simulator](#udacity-simulator-planning)
+  * [Matplotlib](#matplotlib-planning)
+  * [Control](#udacity-simulator-control)
 * [Roadmap](#roadmap)
 * [Contribute](#contribute)
 * [License](#license)
@@ -79,6 +80,11 @@ Medial Axis and Grid discretization have diagonal actions activated by default, 
 
 ### Matplotlib Planning
 
+<p align="center">
+    <img src="misc/allplots.png" alt="Matplot Plots" width="1100" height="300">
+  </a>
+</p>
+
 1. Grid discretization : `python src/grid_search.py`
 2. Medial Axis discretization : `python src/medialaxis_search.py` (not working)
 3. Voronoi Graph discretization : `python src/voronoi_search.py`
@@ -87,6 +93,11 @@ Medial Axis and Grid discretization have diagonal actions activated by default, 
 6. Potential Field : `none`
 
 ### Control Simulator
+
+<p align="center">
+    <img src="misc/drone_scenar5.gif" alt="Controls" width="800" height="350">
+  </a>
+</p>
 
 To use the simulator for control testing, follow these steps :
 
@@ -102,15 +113,6 @@ Note that I do not own the simulator, it was designed and built by Fotokite. (Se
 ### Udacity Simulator Control
 
 Now let's mix things up ! (under dev)
-
-## Plots of the different paths
-
-<p align="center">
-    <img src="misc/allplots.png" alt="Matplot Plots" width="1100" height="300">
-  </a>
-</p>
-
-Performance comparison has yet to come.
 
 ## Roadmap
 
