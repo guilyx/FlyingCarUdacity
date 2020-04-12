@@ -26,7 +26,7 @@ class Phases(Enum):
     DISARMING = 5
 
 
-class BackyardFlyer(Drone):
+class BackyardFlyer(UnityDrone):
 
     def __init__(self, connection):
         super().__init__(connection)
@@ -57,11 +57,11 @@ class BackyardFlyer(Drone):
         self.register_callback(MsgID.LOCAL_VELOCITY, self.velocity_callback)
 
     def attitude_callback(self):
-        if self.flight_state == Phases.WAYPOINT:
+        if self.flight_phase == Phases.WAYPOINT:
             self.attitude_controller()
 
     def gyro_callback(self):
-        if self.flight_state == Phases.WAYPOINT:
+        if self.flight_phase == Phases.WAYPOINT:
             self.bodyrate_controller()
 
     def velocity_callback(self):
@@ -69,7 +69,7 @@ class BackyardFlyer(Drone):
         self.vylog.append(self.local_velocity[1])
         self.vzlog.append(-1 * self.local_velocity[2])
 
-        if self.flight_state == Phases.WAYPOINT:
+        if self.flight_phase == Phases.WAYPOINT:
             self.position_controller()
 
         if self.flight_phase == Phases.LANDING:
@@ -80,13 +80,15 @@ class BackyardFlyer(Drone):
         self.xlog.append(self.local_position[0])
         self.ylog.append(self.local_position[1])
         self.zlog.append(-1 * self.local_position[2])
+
         if self.flight_phase == Phases.TAKEOFF:
             if -1.0 * self.local_position[2] > 0.95 * self.target_position[2]:
                 (self.position_trajectory, self.time_trajectory, self.yaw_trajectory) = self.load_test_trajectory(time_mult=0.5)
                 self.all_waypoints = self.position_trajectory.copy()
                 self.waypoint_number = -1
                 self.waypoint_transition()
-        if self.flight_phase == Phases.WAYPOINT:
+
+        elif self.flight_phase == Phases.WAYPOINT:
             if time.time() > self.time_trajectory[self.waypoint_number]:
 
                 if (len(self.all_waypoints) > 0):
@@ -218,7 +220,7 @@ if __name__ == "__main__":
     conn = MavlinkConnection('tcp:{0}:{1}'.format(args.host, args.port), threaded=False, PX4=False)
     #conn = WebSocketConnection('ws://{0}:{1}'.format(args.host, args.port))
     drone = BackyardFlyer(conn)
-    drone.test_trajectory_file = './HelixUpDownNoFF.txt'
+    drone.test_trajectory_file = './lib/trajectory_test.txt'
     time.sleep(2)
     drone.start()
 

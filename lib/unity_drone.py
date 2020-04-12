@@ -238,7 +238,8 @@ class UnityDrone(Drone):
             time_mult: a multiplier to decrease the total time of the trajectory
         
         """
-        data  = np.loadtxt('test_trajectory.txt', delimiter=',', dtype='Float64')
+        file = self.test_trajectory_file
+        data  = np.loadtxt(file, delimiter=',', dtype='Float64')
         position_trajectory = []
         time_trajectory = []
         yaw_trajectory = []
