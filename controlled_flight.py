@@ -220,7 +220,7 @@ if __name__ == "__main__":
     conn = MavlinkConnection('tcp:{0}:{1}'.format(args.host, args.port), threaded=False, PX4=False)
     #conn = WebSocketConnection('ws://{0}:{1}'.format(args.host, args.port))
     drone = BackyardFlyer(conn)
-    drone.test_trajectory_file = './lib/trajectory_test.txt'
+    drone.test_trajectory_file = './data/trajectory_test.txt'
     time.sleep(2)
     drone.start()
 
