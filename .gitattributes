@@ -1,22 +1,2 @@
 _QuadrotorEstimator/lib/**/* linguist-vendored
 _QuadrotorEstimator/lib/**/* linguist-vendored
-
-_QuadrotorEstimator/lib/matrix/* linguist-vendored
-_QuadrotorEstimator/project/* linguist-vendored
-_QuadrotorEstimator/src/Drawing/* linguist-vendored
-_QuadrotorEstimator/src/Math/* linguist-vendored
-_QuadrotorEstimator/src/MavlinkNode/* linguist-vendored
-_QuadrotorEstimator/src/Simulation/* linguist-vendored
-_QuadrotorEstimator/src/Utility/* linguist-vendored
-_QuadrotorEstimator/src/BaseQuadEstimator.cpp linguist-vendored=true
-_QuadrotorEstimator/src/BaseQuadEstimator.h linguist-vendored=true
-_QuadrotorEstimator/src/QuadEstimatorEKF.cpp linguist-vendored=true
-_QuadrotorEstimator/src/QuadEstimatorEKF.h linguist-vendored=true
-_QuadrotorEstimator/src/Common.h linguist-vendored=true
-_QuadrotorEstimator/src/DataSource.h linguist-vendored=true
-_QuadrotorEstimator/src/BaseController.h linguist-vendored=true
-_QuadrotorEstimator/src/BaseController.cpp linguist-vendored=true
-_QuadrotorEstimator/src/Trajectory.h linguist-vendored=true
-_QuadrotorEstimator/src/Trajectory.cpp linguist-vendored=true
-_QuadrotorEstimator/src/VehicleDatatypes.cpp linguist-vendored=true
-_QuadrotorEstimator/src/ControllerFactory.h linguist-vendored=true
