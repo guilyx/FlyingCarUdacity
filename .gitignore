@@ -1,7 +1,5 @@
 .vscode/*
 *.pyc
 writeup_template.md
-_QuadrotorController/build/*
 _QuadrotorEstimator/build/*
-_QuadrotorController/project/*
 _QuadrotorEstimator/project/*
