@@ -162,16 +162,17 @@ VectorXf QuadEstimatorEKF::PredictState(VectorXf curState, float dt, V3F accel, 
   Quaternion<float> attitude = Quaternion<float>::FromEuler123_RPY(rollEst, pitchEst, curState(6));
 
   ////////////////////////////// BEGIN STUDENT CODE ///////////////////////////
-  V3F accelWorldFrame = attitude.Rotate_BtoI(accel); //Change the body frame acceleration to world frame (inertial frame) acceleration
+  V3F accelWorldFrame = attitude.Rotate_BtoI(accel);
 
   //Position update
   predictedState[0] += curState[3] * dt;
   predictedState[1] += curState[4] * dt;
   predictedState[2] += curState[5] * dt;
+
   //Velocity update
   predictedState[3] += accelWorldFrame[0] * dt;
   predictedState[4] += accelWorldFrame[1] * dt;
-  predictedState[5] += (accelWorldFrame[2] - CONST_GRAVITY) * dt; //Take care of g in z direction
+  predictedState[5] += (accelWorldFrame[2] - CONST_GRAVITY) * dt;
 
   /////////////////////////////// END STUDENT CODE ////////////////////////////
 
@@ -200,19 +201,16 @@ MatrixXf QuadEstimatorEKF::GetRbgPrime(float roll, float pitch, float yaw)
   ////////////////////////////// BEGIN STUDENT CODE ///////////////////////////
   float cosTheta = cos(pitch);
   float sinTheta = sin(pitch);
-  
   float cosPhi = cos(roll);
   float sinPhi = sin(roll);
-  
   float sinPsi = sin(yaw);
   float cosPsi = cos(yaw);
   
-  RbgPrime(0,0) = - cosTheta * sinPsi;
-  RbgPrime(0,1) = - sinPhi  * sinTheta * sinPsi - cosTheta * cosPsi;
-  RbgPrime(0,2) = - cosPhi  * sinTheta * sinPsi + sinPhi   * cosPsi;
-  
+  RbgPrime(0,0) = -cosTheta * sinPsi;
+  RbgPrime(0,1) = -sinPhi  * sinTheta * sinPsi - cosTheta * cosPsi;
   RbgPrime(1,0) = cosTheta * cosPsi;
   RbgPrime(1,1) = sinPhi  * sinTheta * cosPsi - cosPhi * sinPsi;
+  RbgPrime(0,2) = -cosPhi  * sinTheta * sinPsi + sinPhi   * cosPsi;
   RbgPrime(1,2) = cosPhi  * sinTheta * cosPsi + sinPhi * sinPsi;
 
   /////////////////////////////// END STUDENT CODE ////////////////////////////
@@ -259,7 +257,21 @@ void QuadEstimatorEKF::Predict(float dt, V3F accel, V3F gyro)
   gPrime.setIdentity();
 
   ////////////////////////////// BEGIN STUDENT CODE ///////////////////////////
-
+    gPrime(0, 3) = dt;
+    gPrime(1, 4) = dt;
+    gPrime(2, 5) = dt;
+    gPrime(3, 6) = (RbgPrime(0, 0) * accel.x + RbgPrime(0, 1) * accel.y + RbgPrime(0, 2) * (accel.z - 9.81f)) * dt;
+    gPrime(4, 6) = (RbgPrime(1, 0) * accel.x + RbgPrime(1, 1) * accel.y + RbgPrime(1, 2) * (accel.z - 9.81f)) * dt;
+    gPrime(5, 6) = (RbgPrime(2, 0) * accel.x + RbgPrime(2, 1) * accel.y + RbgPrime(2, 2) * (accel.z - 9.81f)) * dt;
+    
+    MatrixXf gPrimeTrs(QUAD_EKF_NUM_STATES, QUAD_EKF_NUM_STATES);
+    MatrixXf sigG(QUAD_EKF_NUM_STATES, QUAD_EKF_NUM_STATES);
+    
+    gPrimeTrs = gPrime;
+    gPrimeTrs.transposeInPlace();
+    
+    sigG = gPrime * (ekfCov * gPrimeTrs) + Q;
+    ekfCov = sigG;
 
   /////////////////////////////// END STUDENT CODE ////////////////////////////
 
@@ -268,6 +280,7 @@ void QuadEstimatorEKF::Predict(float dt, V3F accel, V3F gyro)
 
 void QuadEstimatorEKF::UpdateFromGPS(V3F pos, V3F vel)
 {
+  std::size_t matrixSize = 6;
   VectorXf z(6), zFromX(6);
   z(0) = pos.x;
   z(1) = pos.y;
@@ -284,7 +297,10 @@ void QuadEstimatorEKF::UpdateFromGPS(V3F pos, V3F vel)
   //  - The GPS measurement covariance is available in member variable R_GPS
   //  - this is a very simple update
   ////////////////////////////// BEGIN STUDENT CODE ///////////////////////////
-
+  for (std::size_t i = 0; i < matrixSize; i++) {
+    zFromX(i) = ekfState(i);
+    hPrime(i, i) = 1;
+  }
   /////////////////////////////// END STUDENT CODE ////////////////////////////
 
   Update(z, hPrime, R_GPS, zFromX);
@@ -305,7 +321,16 @@ void QuadEstimatorEKF::UpdateFromMag(float magYaw)
   //    (you don't want to update your yaw the long way around the circle)
   //  - The magnetomer measurement covariance is available in member variable R_Mag
   ////////////////////////////// BEGIN STUDENT CODE ///////////////////////////
-
+  
+  zFromX(0) = ekfState(6);
+  float delta = magYaw - ekfState(6);
+  if ( delta > F_PI ) {
+    zFromX(0) += 2*F_PI;
+  } else if ( delta < -F_PI ) {
+    zFromX(0) -= 2*F_PI;
+  }
+  
+  hPrime(0, 6) = 1;
 
   /////////////////////////////// END STUDENT CODE ////////////////////////////
 
