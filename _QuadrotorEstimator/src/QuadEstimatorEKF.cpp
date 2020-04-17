@@ -93,13 +93,14 @@ void QuadEstimatorEKF::UpdateFromIMU(V3F accel, V3F gyro)
   // (replace the code below)
   // make sure you comment it out when you add your own code -- otherwise e.g. you might integrate yaw twice
 
-  float predictedPitch = pitchEst + dtIMU * gyro.y;
-  float predictedRoll = rollEst + dtIMU * gyro.x;
-  ekfState(6) = ekfState(6) + dtIMU * gyro.z;	// yaw
+  // Use Quaternion template
+  Quaternion<float> quadAttitude = Quaternion<float>::FromEuler123_RPY(rollEst, pitchEst, ekfState(6));
+  V3D bodyRates = V3D(gyro.x, gyro.y, gyro.z);
+  Quaternion<float> predictedQuadAttitude = quadAttitude.IntegrateBodyRate(bodyRates, dtIMU);
 
-  // normalize yaw to -pi .. pi
-  if (ekfState(6) > F_PI) ekfState(6) -= 2.f*F_PI;
-  if (ekfState(6) < -F_PI) ekfState(6) += 2.f*F_PI;
+  double predictedQuadPitch = predictedQuadAttitude.Pitch();
+  double predictedQuadRoll = predictedQuadAttitude.Roll();
+  ekfState(6) = predictedQuadAttitude.Yaw();
 
   /////////////////////////////// END STUDENT CODE ////////////////////////////
 
@@ -108,8 +109,8 @@ void QuadEstimatorEKF::UpdateFromIMU(V3F accel, V3F gyro)
   accelPitch = atan2f(-accel.x, 9.81f);
 
   // FUSE INTEGRATION AND UPDATE
-  rollEst = attitudeTau / (attitudeTau + dtIMU) * (predictedRoll)+dtIMU / (attitudeTau + dtIMU) * accelRoll;
-  pitchEst = attitudeTau / (attitudeTau + dtIMU) * (predictedPitch)+dtIMU / (attitudeTau + dtIMU) * accelPitch;
+  rollEst = attitudeTau / (attitudeTau + dtIMU) * (predictedQuadRoll)+dtIMU / (attitudeTau + dtIMU) * accelRoll;
+  pitchEst = attitudeTau / (attitudeTau + dtIMU) * (predictedQuadPitch)+dtIMU / (attitudeTau + dtIMU) * accelPitch;
 
   lastGyro = gyro;
 }
@@ -161,7 +162,16 @@ VectorXf QuadEstimatorEKF::PredictState(VectorXf curState, float dt, V3F accel, 
   Quaternion<float> attitude = Quaternion<float>::FromEuler123_RPY(rollEst, pitchEst, curState(6));
 
   ////////////////////////////// BEGIN STUDENT CODE ///////////////////////////
+  V3F accelWorldFrame = attitude.Rotate_BtoI(accel); //Change the body frame acceleration to world frame (inertial frame) acceleration
 
+  //Position update
+  predictedState[0] += curState[3] * dt;
+  predictedState[1] += curState[4] * dt;
+  predictedState[2] += curState[5] * dt;
+  //Velocity update
+  predictedState[3] += accelWorldFrame[0] * dt;
+  predictedState[4] += accelWorldFrame[1] * dt;
+  predictedState[5] += (accelWorldFrame[2] - CONST_GRAVITY) * dt; //Take care of g in z direction
 
   /////////////////////////////// END STUDENT CODE ////////////////////////////
 
@@ -188,7 +198,22 @@ MatrixXf QuadEstimatorEKF::GetRbgPrime(float roll, float pitch, float yaw)
   //   that your calculations are reasonable
 
   ////////////////////////////// BEGIN STUDENT CODE ///////////////////////////
-
+  float cosTheta = cos(pitch);
+  float sinTheta = sin(pitch);
+  
+  float cosPhi = cos(roll);
+  float sinPhi = sin(roll);
+  
+  float sinPsi = sin(yaw);
+  float cosPsi = cos(yaw);
+  
+  RbgPrime(0,0) = - cosTheta * sinPsi;
+  RbgPrime(0,1) = - sinPhi  * sinTheta * sinPsi - cosTheta * cosPsi;
+  RbgPrime(0,2) = - cosPhi  * sinTheta * sinPsi + sinPhi   * cosPsi;
+  
+  RbgPrime(1,0) = cosTheta * cosPsi;
+  RbgPrime(1,1) = sinPhi  * sinTheta * cosPsi - cosPhi * sinPsi;
+  RbgPrime(1,2) = cosPhi  * sinTheta * cosPsi + sinPhi * sinPsi;
 
   /////////////////////////////// END STUDENT CODE ////////////////////////////
 
