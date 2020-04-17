@@ -1,11 +1,5 @@
-_QuadrotorEstimator/lib/mavlink/common/* linguist-vendored
-_QuadrotorEstimator/lib/mavlink/* linguist-vendored
-_QuadrotorEstimator/lib/Eigen/src/Eigenvalues/* linguist-vendored
-_QuadrotorEstimator/lib/Eigen/src/Chloesky/* linguist-vendored
-_QuadrotorEstimator/lib/Eigen/src/CholmodSupport/* linguist-vendored
-_QuadrotorEstimator/lib/Eigen/src/Jacobi/* linguist-vendored
-_QuadrotorEstimator/lib/Eigen/src/LU/* linguist-vendored
-_QuadrotorEstimator/lib/Eigen/src/SparseLU/* linguist-vendored
+_QuadrotorEstimator/lib/**/* linguist-vendored
+_QuadrotorEstimator/lib/**/* linguist-vendored
 
 _QuadrotorEstimator/lib/matrix/* linguist-vendored
 _QuadrotorEstimator/project/* linguist-vendored
