@@ -92,7 +92,7 @@ Medial Axis and Grid discretization have diagonal actions activated by default, 
 5. Receding Horizon : `none`
 6. Potential Field : `none`
 
-### Control Simulator
+### Control and Estimation Simulator
 
 <p align="center">
     <img src="misc/drone_scenar5.gif" alt="Controls" width="800" height="350">
@@ -101,14 +101,16 @@ Medial Axis and Grid discretization have diagonal actions activated by default, 
 
 To use the simulator for control testing, follow these steps :
 
-1. `cd _QuadrotorController`
+1. `cd _QuadrotorEstimator`
 2. `mkdir build && cd build` 
 3. `cmake ..` 
 4. `make`
-5. `./CPPSim`
+5. `./CPPEstSim`
 
-You can use right click to change scenario, as well as change the control parameters ( that are already tuned ) in `_QuadrotorController/config/QuadControlParams.txt`.
+You can use right click to change scenario, as well as change the control parameters ( that are already tuned ) in `_QuadrotorController/config/QuadControlParams.txt` and `_QuadrotorController/config/QuadEstimatorEKF.txt`.
 Note that I do not own the simulator, it was designed and built by Fotokite. (Sergei Lupashin in particular)
+
+EKF Estimator is located in `QuadEstimatorEKF.cpp` and the Cascaded PID Controller is located in `QuadControl.cpp`.
 
 ### Udacity Simulator Control
 
