@@ -54,7 +54,6 @@ class BackyardFlyer(UnityDrone):
         self.register_callback(MsgID.STATE, self.state_callback)
         self.register_callback(MsgID.ATTITUDE, self.attitude_callback)
         self.register_callback(MsgID.RAW_GYROSCOPE, self.gyro_callback)
-        self.register_callback(MsgID.LOCAL_VELOCITY, self.velocity_callback)
 
     def attitude_callback(self):
         if self.flight_phase == Phases.WAYPOINT:
