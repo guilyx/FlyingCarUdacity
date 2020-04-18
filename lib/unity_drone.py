@@ -251,6 +251,7 @@ class UnityDrone(Drone):
             yaw_trajectory.append(np.arctan2(position_trajectory[i+1][1]-position_trajectory[i][1],position_trajectory[i+1][0]-position_trajectory[i][0]))
         yaw_trajectory.append(yaw_trajectory[-1])
         return(position_trajectory,time_trajectory,yaw_trajectory)
+        
     
     def calculate_horizontal_error(self):
         """Calcuate the error beteween the local position and target local position

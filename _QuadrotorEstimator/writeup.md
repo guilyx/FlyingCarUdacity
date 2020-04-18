@@ -30,6 +30,8 @@ double predictedQuadRoll = predictedQuadAttitudeRol();
 ekfState(6) = predictedQuadAttitude.Yaw();
 ```
 
+
+
 ## Prediction
 
 ### Predict State
@@ -83,6 +85,8 @@ sigG = gPrime * (ekfCov * gPrimeTrs) + Q;
 ekfCov = sigG;
 ```
 
+
+
 ## Magnetometer Update
 
 ```
@@ -97,6 +101,8 @@ if ( delta > F_PI ) {
 hPrime(0, 6) = 1;
 ```
 
+
+
 ## Closed Loop + GPS update
 
 ```
@@ -106,6 +112,8 @@ for (std::size_t i = 0; i < matrixSize; i++) {
     hPrime(i, i) = 1;
 }
 ```
+
+
 
 ## Controller
 
@@ -127,45 +135,61 @@ kpYaw = 3
 kpPQR = 95, 95, 6
 ```
 
-## Flight Evaluation
+
+
+# Flight Evaluation
+
+
 
 ## Sensor Noise
+
 ```
 PASS: ABS(Quad.GPS.X-Quad.Pos.X) was less than MeasuredStdDev_GPSPosXY for 68% of the time
 
 PASS: ABS(Quad.IMU.AX-0.000000) was less than MeasuredStdDev_AccelXY for 68% of the time
 ```
 
+
+
 ## Attitude Estimation
+
 ```
 PASS: ABS(Quad.Est.E.MaxEuler) was less than 0.100000 for at least 3.000000 seconds
 ```
 
+
+
 ## Predict State
+
 ```
 No criterias : prediction matches true state.
 ```
 
-## Predict Covariance
+
+
+## Predict Co-variance
+
 ```
 No criterias again, but the estimations grows with the std.
 ```
 
+
+
 ## Magnetometer Update
+
 ```
 PASS: ABS(Quad.Est.E.Yaw) was less than 0.120000 for at least 10.000000 seconds
 PASS: ABS(Quad.Est.E.Yaw-0.000000) was less than Quad.Est.S.Yaw for 76% of the time
 ```
 
-# GPS Update
+
+
+## GPS Update
+
 ```
 PASS: ABS(Quad.Est.E.Pos) was less than 1.000000 for at least 20.000000 seconds
 ```
 
 
 
-## Demo 
-
-<p align="center">
-    <img src=drone_scenar5.gif" alt="Scenario 5" width="700" height="300">
-</p>
+Note that I used my tuned controller from the Controller project (P3). I had to re-tune it for it to pass the tests of both Magnetometer and GPS Updates.
