@@ -1,6 +1,6 @@
 [![Udacity - Fly Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg?style=flat-square)](https://www.udacity.com/course/flying-car-nanodegree--nd787)
 [![Say Thanks][saythanks-shield]][saythanks-url]
-[![HitCount](http://hits.dwyl.com/guilyx/gantt-trampoline.svg)](http://hits.dwyl.com/guilyx/gantt-trampoline)
+[![HitCount](http://hits.dwyl.com/guilyx/autonomous-uav.svg)](http://hits.dwyl.com/guilyx/autonomous-uav)
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
