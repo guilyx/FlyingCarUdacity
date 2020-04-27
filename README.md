@@ -1,4 +1,5 @@
-[![Udacity - Fly Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](https://www.udacity.com/course/flying-car-nanodegree--nd787)
+[![Udacity - Fly Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg?style=flat-square)](https://www.udacity.com/course/flying-car-nanodegree--nd787)
+[![Say Thanks][saythanks-shield]][saythanks-url]
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
@@ -166,6 +167,8 @@ Erwin Lejeune - [@spida_rwin](https://twitter.com/spida_rwin) - erwin.lejeune15@
 
 - [Erwin Lejeune](https://github.com/Guilyx)
 
+[saythanks-shield]: https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg?style=flat-square
+[saythanks-url]: https://saythanks.io/to/erwin.lejeune15%40gmail.com?style=flat-square
 [contributors-shield]: https://img.shields.io/github/contributors/guilyx/autonomous-uav.svg?style=flat-square
 [contributors-url]: https://github.com/guilyx/autonomous-uav/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/guilyx/autonomous-uav.svg?style=flat-square
